@@ -3,6 +3,10 @@ import {Component} from 'react-native';
 import { StyleSheet, Text, View,Button,TextInput } from 'react-native';
 import styles from './stylesheet/style';
 let uname="admin",upass="admin";
+import {SecureStore} from 'expo';
+import authUser from '../Services/tokens'
+import urlAPI from '../config';
+import Profile from './Profile';
 
 class Login extends React.Component {
     static navigationOptions = {
@@ -21,7 +25,7 @@ class Login extends React.Component {
       async getMsgFromApi() {
         try {
           let response = await fetch(
-            'http://192.168.42.83:2000'
+            urlAPI.url
           );
           let responseJson = await response.json();
           this.setState({
@@ -48,7 +52,7 @@ class Login extends React.Component {
       //console.warn(formBody)
         try {
             let response = await fetch(
-              'http://192.168.42.83:2000/passauth/login',
+              urlAPI.url+'/passauth/login',
                 {
                 method:'POST',
                 headers:{
@@ -59,11 +63,15 @@ class Login extends React.Component {
                 }   
             );
         let responseJson = await response.json();
-        if(responseJson.success==true)
+        if(responseJson.success==true){
+        authUser.username=details.username;
+        authUser.token=responseJson.token;
+        await SecureStore.setItemAsync('secure_token',responseJson.token);
         this.setState({
-            token:responseJson.token,
+            token:await SecureStore.getItemAsync('secure_token'),
             success:responseJson.success
             })
+        }
         else{
           this.setState({
             token:'Invalid',
@@ -93,7 +101,7 @@ class Login extends React.Component {
         />
              <Button
                  title="Login"
-              onPress={()=>{this.getTokenFromAPI()}} ></Button>
+              onPress={()=>{this.getTokenFromAPI().then(()=>{if(this.state.success)navigate('Profile')})}} ></Button>
               <Text>{this.state.token}</Text>
         </View>
       );

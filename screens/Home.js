@@ -2,16 +2,19 @@ import React from 'react';
 import {Component} from 'react-native';
 import {Button, StyleSheet,FlatList,ActivityIndicator, Text, View } from 'react-native';
 import styles from './stylesheet/style';
+import urlAPI from '../config';
+
 class Home extends React.Component {
     static navigationOptions = {
         title: 'Welcome',
       };
       constructor(props){
         super(props);
-        this.state ={ isLoading: true}
+        this.state ={ isLoading: false,
+                      }
       }
       componentDidMount(){
-        return fetch('http://192.168.42.83:2000')
+        return fetch(urlAPI.url)
           .then((response) => response.json())
           .then((responseJson) => {
     

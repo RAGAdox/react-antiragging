@@ -23,7 +23,7 @@
       "**/*"
     ],
     "android": {
-      "package": "com.yourcompany.yourappname"
+      "package": "com.RAGAdox.antiragging"
     },
     "ios": {
       "supportsTablet": true

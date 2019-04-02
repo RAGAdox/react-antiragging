@@ -1,6 +1,6 @@
 import React from 'react';
 import {Component} from 'react-native';
-import { StyleSheet, Text, View,Button,TextInput } from 'react-native';
+import { StyleSheet, Text, View,Button,TextInput,AsyncStorage } from 'react-native';
 import styles from './stylesheet/style';
 let uname="admin",upass="admin";
 import {SecureStore} from 'expo';
@@ -66,9 +66,11 @@ class Login extends React.Component {
         if(responseJson.success==true){
         authUser.username=details.username;
         authUser.token=responseJson.token;
-        await SecureStore.setItemAsync('secure_token',responseJson.token);
+        //await SecureStore.setItemAsync('secure_token',responseJson.token);
+        await AsyncStorage.setItem('secure_token',responseJson.token);
         this.setState({
-            token:await SecureStore.getItemAsync('secure_token'),
+            //token:await SecureStore.getItemAsync('secure_token'),
+            token:await AsyncStorage.getItem('secure_token'),
             success:responseJson.success
             })
         }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Component} from 'react-native';
-import { ActivityIndicator,TextInput,Button, Text, View } from 'react-native';
+import { ActivityIndicator,TextInput,Button, Text, View ,Platform} from 'react-native';
+import { Constants, Location, Permissions } from 'expo';
 import styles from './stylesheet/style';
 import authUser from '../Services/tokens'
 import urlAPI from '../config';
@@ -12,12 +13,40 @@ class Complain extends React.Component{
           super(props);
           this.state={
               ragger:'',
-              message:''
+              message:'',
+              location: null,
+              errorMessage: null,
           }
       }
+
+      componentWillMount() {
+        if (Platform.OS === 'android' && !Constants.isDevice) {
+          this.setState({
+            errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
+          });
+        } else {
+          this._getLocationAsync();
+        }
+      }
+
+
+      _getLocationAsync = async () => {
+        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+        if (status !== 'granted') {
+          this.setState({
+            errorMessage: 'Permission to access location was denied',
+          });
+        }
+    
+        let location = await Location.getCurrentPositionAsync({});
+        this.setState({ location });
+      };
+
       async postComplainAPI(){
         let details={
             'ragger':this.state.ragger,
+            'locationLatitude':this.state.location.coords.latitude,
+            'locationLongitude':this.state.location.coords.longitude
         }
         var formBody=[]
         for (var property in details) {
@@ -63,8 +92,8 @@ class Complain extends React.Component{
         />
             <Button
                 title='Complain'
-                onPress={()=>{this.postComplainAPI().then(()=>console.warn('Complain Executed'))}}></Button>
-            <Text>{this.state.message}</Text>
+                onPress={()=>{this.postComplainAPI().then(()=>console.warn('Complain Executed := '+JSON.stringify(this.state.location.coords)))}}></Button>
+            <Text>{this.state.message}**</Text>
         </View>
     )
     }

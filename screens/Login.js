@@ -19,7 +19,7 @@ class Login extends React.Component {
             password:'',
             dataSource1:'',
             success:'',
-            token:'',
+            token:authUser.token,
         };
       }
       async getMsgFromApi() {
@@ -68,6 +68,7 @@ class Login extends React.Component {
         authUser.token=responseJson.token;
         //await SecureStore.setItemAsync('secure_token',responseJson.token);
         await AsyncStorage.setItem('secure_token',responseJson.token);
+        await AsyncStorage.setItem('username',details.username);
         this.setState({
             //token:await SecureStore.getItemAsync('secure_token'),
             token:await AsyncStorage.getItem('secure_token'),

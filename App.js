@@ -4,8 +4,9 @@ import HomeScreen from './screens/Home';
 import LoginScreen from './screens/Login';
 import ProfileScreen from './screens/Profile';
 import SignUpScreen from './screens/Signup';
-import ComplainScreen from './screens/Complain'
-import HelpScreen from './screens/Help'
+import ComplainScreen from './screens/Complain';
+import HelpScreen from './screens/Help';
+import authUser from './Services/tokens';
 const MainNavigator = createStackNavigator({
   Home: {screen: HomeScreen},
   Login: {screen: LoginScreen},
@@ -26,6 +27,6 @@ const MyDrawerNavigator = createDrawerNavigator({
   Complain:{screen:ComplainScreen},
   Help:{screen:HelpScreen}
 });
-App=createAppContainer(MyDrawerNavigator);
+App=createAppContainer(MyDrawerNavigator)
 export default App;
 

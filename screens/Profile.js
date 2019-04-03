@@ -1,6 +1,6 @@
 import React from 'react';
 import {Component} from 'react-native';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View ,Button} from 'react-native';
 import styles from './stylesheet/style';
 import authUser from '../Services/tokens'
 import urlAPI from '../config';
@@ -26,13 +26,8 @@ class Profile extends React.Component {
       )
       }*/
       componentDidMount(){
-        
-        
-        
         return this.getMsgFromApi().then(()=>{
             this.setState({isLoading:false})
-            console.warn('loading set to false')
-            console.warn(this.state.success)
           }  
         )
       }
@@ -67,8 +62,8 @@ class Profile extends React.Component {
           console.error(error);
         }
       }
-    render() {
-      
+   /* render() {
+      const {navigate} = this.props.navigation;
     if(this.state.isLoading)
     {
       return(<View><Text>Loading</Text><ActivityIndicator/>
@@ -89,14 +84,56 @@ class Profile extends React.Component {
       
       )
       else{
-        
+        //navigate('Login')
+        return(
+          <View style={styles.container}>
+            <Button title='Login' onPress={()=>navigate('Login')} />
+            <Text>{'\n\n'}</Text>
+            <Button title='Sign Up' onPress={()=>navigate('SignUp')} />
+          </View>
+        )
     return(
-      <View  onload={()=>{/*if(authUser.username)this.setState({isLoading:true})*/}}
-      style={styles.container}><Text>{this.state.success}Error Occured{'\n'}{authUser.username}{this.state.message}</Text></View>
+        <View  onload={()=>{if(authUser.username)this.setState({isLoading:true})}} style={styles.container}>
+          <Text>{this.state.success}Error Occured{'\n'}{authUser.username}{this.state.message}</Text>
+        </View>
       )
     }}
     
-  }
+    }*/
+    whichScreen(){
+      if(this.state.isLoading){
+        return(<React.Fragment><Text>Loading</Text><ActivityIndicator/></React.Fragment>)
+      }
+      else{
+        if(this.state.success&&this.state.user){
+          return (
+            <React.Fragment>
+              <Text>this is Profile{"\n"}</Text>
+              <Text style={styles.text}>Username{'\t'}{this.state.user.username}</Text>
+              <Text>Name{'\t'}{this.state.user.name}</Text>
+              <Text>Email{'\t'}{this.state.user.email}</Text>
+              <Text>College{'\t'}{this.state.user.collegeName}</Text>
+              <Text>Present Address{'\t'}{this.state.user.presentAddress}</Text>
+              <Text>Phone Number{'\t'}{this.state.user.phoneNumber}</Text>        
+            </React.Fragment>
+          )
+        }
+        else{
+          return(
+            <React.Fragment>
+              <Button title='Login' onPress={()=>navigate('Login')} />
+              <Text>{'\n\n'}</Text>
+              <Button title='Sign Up' onPress={()=>navigate('SignUp')} />
+            </React.Fragment> 
+          )
+        }
+      }
+    }
+    render(){
+      return(
+        <View onload={()=>{console.warn('Is not Executing'),this.getMsgFromApi().then(()=>{console.warn('onLoaded'),this.setState({isLoading:false})})}} style={styles.container}>{this.whichScreen()}</View>
+      )
+    }
 }
   
 

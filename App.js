@@ -20,8 +20,8 @@ const TabNavigator = createBottomTabNavigator({
   Login: {screen: LoginScreen},
 });
 const MyDrawerNavigator = createDrawerNavigator({
-  Home: {screen: HomeScreen},
-  Login: {screen: LoginScreen}, 
+  Login: {screen: LoginScreen},
+  Home: {screen: HomeScreen}, 
   Profile:{screen:ProfileScreen},
   Signup:{screen:SignUpScreen},
   Complain:{screen:ComplainScreen},

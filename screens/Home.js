@@ -18,24 +18,29 @@ class Home extends React.Component {
       }
       async tkn(){
         this.setState({
-          message:await AsyncStorage.getItem('secure_token'),
+          token:await AsyncStorage.getItem('secure_token'),
         })
       }
       componentDidMount(){
-        return fetch(urlAPI.url)
-          .then((response) => response.json())
-          .then((responseJson) => {
-            this.setState({
-              isLoading: false,
-              dataSource: responseJson.msg,//+await AsyncStorage.getItem('secure_token'),
-            });
-    
-          }).then(()=>this.tkn())
-          .catch((error) =>{
-            console.error(error);
-          });
-      }
-     
+        return this.tkn().then(()=>{
+          fetch(urlAPI.url+'/passauth/checktoken',
+          {
+            method:'GET',
+            headers:{
+              'Authorization':"Bearer "+this.state.token,
+            }
+          })
+        .then((response)=>response.json())
+        .then((responseJSON)=>{
+          this.setState({
+            isLoading:false,
+            dataSource:responseJSON.message,
+          })
+        }
+        )
+      })
+    }
+
     render() {
         const {navigate} = this.props.navigation;
         if(this.state.isLoading){
@@ -45,7 +50,7 @@ class Home extends React.Component {
               </View>
             )
           }
-      
+      if(this.state.success=false)
       return (
           <View style={styles.container}>
               <Text style={styles.text}>this is home .Lets Code{'\n'}{this.state.message}</Text>
@@ -58,6 +63,7 @@ class Home extends React.Component {
           </View>
         
       );
+      return(<View><Text>All good</Text></View>)
     }
   }
   

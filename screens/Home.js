@@ -13,6 +13,7 @@ import styles from "./stylesheet/style";
 import urlAPI from "../config";
 import authUser from "../Services/tokens";
 import Login from "./Login";
+import App from "../App";
 
 class Home extends React.Component {
   static navigationOptions = {
@@ -27,6 +28,9 @@ class Home extends React.Component {
       token: ""
     };
   }
+  componentDidMount(){
+    this.props.checkToken;
+  }
   async tkn() {
     this.setState({
       token: await AsyncStorage.getItem("secure_token")
@@ -34,6 +38,7 @@ class Home extends React.Component {
   }
   componentDidMount() {
     return this.tkn().then(() => {
+      console.warn('Component Mount')
       fetch(urlAPI.url + "/passauth/checktoken", {
         method: "GET",
         headers: {
@@ -63,31 +68,28 @@ class Home extends React.Component {
     }
     if (this.state.success == false) {
       return (
-        <View>
-          <Login />
+        <View style={styles.container}>
+          <Text>Must login First{this.state.message}</Text>
+          <Button title='Go To Login' onPress={()=>navigate('Login')}></Button>
         </View>
       );
     }
-
+    //this was commented
     /*return (
-          <View style={styles.container}>
-              <Text style={styles.text}>this is home .Lets Code{'\n'}{this.state.message}</Text>
-            
+      
+      <View style={styles.container}>
+        <Text style={styles.text}>this is home .Lets Code{'\n'}{this.state.message}</Text>
         <Text>{this.state.dataSource}</Text>
-              <Button
-        title="Go to Login"
-        onPress={() => navigate('Login')}
-      />
-          </View>
-        
-      );*/
+        <Button title="Go to Login" onPress={() => navigate('Login') }/>
+      </View>
+       
+    );*/ 
     if (this.state.success == true) {
       return (
-        <View>
-          <Text>
-            {this.state.message}
-            {this.state.token}
-          </Text>
+        <View style={styles.container}>
+          <Button style={styles.button} title='COMPLAIN' onPress={()=>navigate('Complain')}></Button>
+          <Text>{"\n\n"}</Text>
+          <Button title='HELP A FRIEND' onPress={()=>navigate('Help')}></Button>
         </View>
       );
     } else {
@@ -97,7 +99,61 @@ class Home extends React.Component {
         </View>
       );
     }
+  
+}
+/*render() {
+  const { navigate } = this.props.navigation;
+  if (this.props.isFetching) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator />
+      </View>
+    );
   }
+  if (this.props.success == false) {
+    return (
+      <View style={styles.container}>
+        <Text>Must login First</Text>
+        <Button title='Go To Login' onPress={()=>navigate('Login')}></Button>
+      </View>
+    );
+  }
+  //this was commented
+  return (
+        <View style={styles.container}>
+            <Text style={styles.text}>this is home .Lets Code{'\n'}{this.state.message}</Text>
+          
+      <Text>{this.state.dataSource}</Text>
+            <Button
+      title="Go to Login"
+      onPress={() => navigate('Login')}
+    />
+        </View>
+      
+    );
+  if (this.props.success == true) {
+    return (
+      <View>
+        <Text>
+          {this.props.message}
+          {this.props.token}
+        </Text>
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text>{this.props.isFetching}</Text>
+        <Text>Login First</Text>
+        <Button title='Go to login' onPress={()=>{
+          console.warn(App)
+          console.warn(this.props)
+          navigate('Login')
+          }}/>
+      </View>
+    );
+  }
+}*/
 }
 
 //Home= createAppContainer(TabNavigator);

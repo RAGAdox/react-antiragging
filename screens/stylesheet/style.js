@@ -15,6 +15,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     margin: 3
   },
+  button:{
+    borderRadius:10,
+    borderWidth:1,
+    backgroundColor:'#010101'
+  },
   input: {
     borderRadius: 4,
     borderWidth: 0.5,

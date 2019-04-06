@@ -47,7 +47,7 @@ class Login extends React.Component {
       username: this.state.username,
       password: this.state.password
     };
-
+    //console.warn(details)
     var formBody = [];
     for (var property in details) {
       var encodedKey = encodeURIComponent(property);
@@ -65,12 +65,13 @@ class Login extends React.Component {
         },
         body: formBody
       });
-      let responseJson = await response.json();
+      let responseJson =await response.json();
       if (responseJson.success == true) {
+        
         authUser.username = details.username;
         authUser.token = responseJson.token;
         //await SecureStore.setItemAsync('secure_token',responseJson.token);
-        await AsyncStorage.setItem("secure_token", responseJson.token);
+        await AsyncStorage.setItem("secure_token", responseJson.token).then(()=>console.warn('token saved'+responseJson.token));
         await AsyncStorage.setItem("username", details.username);
         this.setState({
           //token:await SecureStore.getItemAsync('secure_token'),
@@ -88,26 +89,26 @@ class Login extends React.Component {
     }
   }
   render() {
-    //const {navigate} = this.props.navigation;
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text>this is Login</Text>
         <TextInput
           style={styles.input}
           placeholder="Username"
-          value={this.state.username}
           onChangeText={username => this.setState({ username })}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
-          value={this.state.password}
           onChangeText={password => this.setState({ password })}
         />
         <Button
           title="Login"
           onPress={() => {
+            console.warn('press')
             this.getTokenFromAPI().then(() => {
+              console.warn('get API')
               if (this.state.success) navigate("Profile");
             });
           }}

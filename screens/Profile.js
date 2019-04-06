@@ -33,6 +33,7 @@ class Profile extends React.Component {
       }*/
   componentDidMount() {
     return this.getMsgFromApi().then(() => {
+      console.warn('component Mount')
       this.setState({ isLoading: false });
     });
   }
@@ -153,7 +154,7 @@ class Profile extends React.Component {
             <Button title="Sign Up" onPress={() => navigate("SignUp")} />
             <Text>{"\n\n"}</Text>
             <Button
-              title="Sign Up"
+              title="Log Out"
               onPress={() => {
                 AsyncStorage.removeItem("secure_token").then(() => {
                   console.warn("Removed");

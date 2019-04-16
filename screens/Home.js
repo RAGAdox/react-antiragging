@@ -28,17 +28,47 @@ class Home extends React.Component {
       token: ""
     };
   }
-  componentDidMount(){
-    this.props.checkToken;
-  }
+  /*didBlurSubscription = this.props.navigation.addListener(
+    'didBlur',
+    payload => {
+      console.debug('didBlur', payload);
+      console.warn('didBlur')
+    }
+  );*/
+  willFocusSubscription=this.props.navigation.addListener(
+    'didFocus',
+    payload=>{
+      //console.warn('willFocus')
+      this.tkn().then(() => {
+        fetch(urlAPI.url + "/passauth/checktoken", {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + this.state.token
+          }
+        })
+          .then(response => response.json())
+          .then(responseJSON => {
+            this.setState({
+              isLoading: false,
+              message: responseJSON.message,
+              success: responseJSON.success
+            });
+          }).then(()=>this.forceUpdate());
+      });
+    }
+  )
+  
+  // Remove the listener when you are done
+  //didBlurSubscription.remove();
   async tkn() {
     this.setState({
-      token: await AsyncStorage.getItem("secure_token")
+      token: await AsyncStorage.getItem("secure_token"),
     });
+    authUser.token=await AsyncStorage.getItem("secure_token")
+    authUser.username=await AsyncStorage.getItem("username")
   }
   componentDidMount() {
     return this.tkn().then(() => {
-      console.warn('Component Mount')
       fetch(urlAPI.url + "/passauth/checktoken", {
         method: "GET",
         headers: {
@@ -47,7 +77,6 @@ class Home extends React.Component {
       })
         .then(response => response.json())
         .then(responseJSON => {
-          //console.warn(this.state.token + "   success=" + responseJSON.success);
           this.setState({
             isLoading: false,
             message: responseJSON.message,
@@ -67,10 +96,11 @@ class Home extends React.Component {
       );
     }
     if (this.state.success == false) {
+      console.warn(this.state.success + this.state.message + this.state.token);
       return (
         <View style={styles.container}>
           <Text>Must login First{this.state.message}</Text>
-          <Button title='Go To Login' onPress={()=>navigate('Login')}></Button>
+          <Button title="Go To Login" onPress={() => navigate("Login")} />
         </View>
       );
     }
@@ -83,13 +113,18 @@ class Home extends React.Component {
         <Button title="Go to Login" onPress={() => navigate('Login') }/>
       </View>
        
-    );*/ 
+    );*/
+
     if (this.state.success == true) {
       return (
         <View style={styles.container}>
-          <Button style={styles.button} title='COMPLAIN' onPress={()=>navigate('Complain')}></Button>
+          <Button
+            style={styles.button}
+            title="COMPLAIN"
+            onPress={() => navigate("Complain")}
+          />
           <Text>{"\n\n"}</Text>
-          <Button title='HELP A FRIEND' onPress={()=>navigate('Help')}></Button>
+          <Button title="HELP A FRIEND" onPress={() => navigate("Help")} />
         </View>
       );
     } else {
@@ -99,9 +134,8 @@ class Home extends React.Component {
         </View>
       );
     }
-  
-}
-/*render() {
+  }
+  /*render() {
   const { navigate } = this.props.navigation;
   if (this.props.isFetching) {
     return (

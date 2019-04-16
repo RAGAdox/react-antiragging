@@ -15,6 +15,7 @@ class Profile extends React.Component {
   static navigationOptions = {
     title: "Profile"
   };
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -24,16 +25,18 @@ class Profile extends React.Component {
       user: ""
     };
   }
-  /*componentDidUpdate(){
-        return this.getMsgFromApi().then(()=>{
-          this.setState({isLoading:false})
-          
-        }  
-      )
-      }*/
+  willFocusSubscription = this.props.navigation.addListener(
+    "didFocus",
+    payload => {
+      this.getMsgFromApi().then(() => {
+        console.warn("component Mount");
+        this.setState({ isLoading: false });
+      });
+    }
+  );
   componentDidMount() {
     return this.getMsgFromApi().then(() => {
-      console.warn('component Mount')
+      console.warn("authuser from componentdidmount" + authUser.username);
       this.setState({ isLoading: false });
     });
   }
@@ -57,7 +60,8 @@ class Profile extends React.Component {
       if ((responseJson.success = true))
         this.setState({
           success: responseJson.success,
-          user: responseJson.user
+          user: responseJson.user,
+          message: responseJson.message
         });
       else if ((responseJson.success = false))
         this.setState({
@@ -107,7 +111,14 @@ class Profile extends React.Component {
     }}
     
     }*/
+
+  render() {
+    
+
+    return <View style={styles.container}>{this.whichScreen()}</View>;
+  }
   whichScreen() {
+    const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
         <React.Fragment>
@@ -144,6 +155,24 @@ class Profile extends React.Component {
               Phone Number{"\t"}
               {this.state.user.phoneNumber}
             </Text>
+            <Button
+              title="Log Out"
+              onPress={() => {
+                AsyncStorage.removeItem("secure_token").then(() => {
+                  authUser.username = "";
+                  authUser.token = "";
+                  this.setState({
+                    isLoading: true,
+                    success: false,
+                    message: "",
+                    user: ""
+                  });
+                  this.forceUpdate(()=>{console.warn('forced update'+this.state.success)})
+                  //this.componentDidMount()
+                  console.warn("Removed");
+                });
+              }}
+            />
           </React.Fragment>
         );
       } else {
@@ -151,35 +180,14 @@ class Profile extends React.Component {
           <React.Fragment>
             <Button title="Login" onPress={() => navigate("Login")} />
             <Text>{"\n\n"}</Text>
-            <Button title="Sign Up" onPress={() => navigate("SignUp")} />
-            <Text>{"\n\n"}</Text>
             <Button
-              title="Log Out"
-              onPress={() => {
-                AsyncStorage.removeItem("secure_token").then(() => {
-                  console.warn("Removed");
-                });
-              }}
+              title="Sign Up"
+              onPress={() => navigate("SignUp")}
             />
           </React.Fragment>
         );
       }
     }
-  }
-  render() {
-    return (
-      <View
-        onload={() => {
-          console.warn("Is not Executing"),
-            this.getMsgFromApi().then(() => {
-              console.warn("onLoaded"), this.setState({ isLoading: false });
-            });
-        }}
-        style={styles.container}
-      >
-        {this.whichScreen()}
-      </View>
-    );
   }
 }
 

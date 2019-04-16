@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 3399,
-  "expoServerNgrokUrl": "https://h2-j6t.anonymous.app.exp.direct",
-  "packagerNgrokUrl": "https://packager.h2-j6t.anonymous.app.exp.direct",
-  "ngrokPid": 3601
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

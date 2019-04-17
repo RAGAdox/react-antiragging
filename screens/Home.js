@@ -99,7 +99,7 @@ class Home extends React.Component {
       console.warn(this.state.success + this.state.message + this.state.token);
       return (
         <View style={styles.container}>
-          <Text>Must login First{this.state.message}</Text>
+          <Text>Must login First</Text>
           <Button title="Go To Login" onPress={() => navigate("Login")} />
         </View>
       );

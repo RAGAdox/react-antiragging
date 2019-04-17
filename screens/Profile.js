@@ -167,10 +167,9 @@ class Profile extends React.Component {
                     message: "",
                     user: ""
                   });
-                  this.forceUpdate(()=>{console.warn('forced update'+this.state.success)})
-                  //this.componentDidMount()
                   console.warn("Removed");
-                });
+                }).then(()=>navigate('Login'));
+                
               }}
             />
           </React.Fragment>

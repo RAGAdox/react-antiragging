@@ -5,6 +5,7 @@ import { Constants, Location, Permissions } from 'expo';
 import styles from './stylesheet/style';
 import authUser from '../Services/tokens'
 import urlAPI from '../config';
+import { NavigationEvents } from 'react-navigation';
 class Complain extends React.Component{
     static navigationOptions = {
         title: 'Complain',
@@ -18,7 +19,30 @@ class Complain extends React.Component{
               errorMessage: null,
           }
       }
-
+      editable() {
+        if (authUser.username && authUser.token) {
+          return true;
+        } else return false;
+      }
+      willFocusSubscription=this.props.navigation.addListener(
+        'didFocus',
+        payload=>{
+          if(this.editable())
+          {
+            this.setState({message:''})
+          }
+          else{
+            console.warn('editable function returns false')
+            this.setState({message:'Not Logged in'})
+          }
+        })
+      showLogin(){
+        const { navigate } = this.props.navigation;
+        if(!this.editable())
+        {
+          return(<React.Fragment><Button title='Login' onPress={()=>navigate("Login")}></Button></React.Fragment>)
+        }
+      }
       componentWillMount() {
         if (Platform.OS === 'android' && !Constants.isDevice) {
           this.setState({
@@ -63,6 +87,7 @@ class Complain extends React.Component{
                 headers:{
                   'Authorization':"Bearer "+authUser.token,
                   'username':authUser.username,
+                  'name':authUser.name,
                   'Accept': 'application/json',
                   'Content-Type':'application/x-www-form-urlencoded'
                 },
@@ -76,7 +101,10 @@ class Complain extends React.Component{
               })
               //console.warn(responseJson.message)
             else
-              console.warn('Error In registrring Complain'+responseJson.message)
+              this.setState({
+                message:responseJson.message
+              })
+              //console.warn('Error In registrring Complain'+responseJson.message)
         }catch(error){
             console.error(error)
         }
@@ -86,14 +114,16 @@ class Complain extends React.Component{
         <View style={styles.container}>
             <Text>Complain Against Ragging</Text>
             <TextInput
-          style={{height: 40}}
+          style={styles.input}
+          editable={this.editable()}
           placeholder="Name of the Ragger"
           onChangeText={(ragger) => this.setState({ragger})}
         />
             <Button
                 title='Complain'
                 onPress={()=>{this.postComplainAPI().then(()=>console.warn('Complain Executed := '+JSON.stringify(this.state.location.coords)))}}></Button>
-            <Text>{this.state.message}**</Text>
+            <Text>{this.state.message}</Text>
+            {this.showLogin()}
         </View>
     )
     }

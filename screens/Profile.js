@@ -57,12 +57,13 @@ class Profile extends React.Component {
       });
       let responseJson = await response.json();
       //console.warn(responseJson)
-      if ((responseJson.success = true))
+      if ((responseJson.success = true)){
         this.setState({
           success: responseJson.success,
           user: responseJson.user,
           message: responseJson.message
         });
+      }
       else if ((responseJson.success = false))
         this.setState({
           success: responseJson.success,
@@ -131,36 +132,39 @@ class Profile extends React.Component {
         return (
           <React.Fragment>
             <Text>this is Profile{"\n"}</Text>
-            <Text style={styles.text}>
+            <Text style={styles.textborder}>
               Username{"\t"}
               {this.state.user.username}
             </Text>
-            <Text>
+            <Text style={styles.textborder}>
               Name{"\t"}
               {this.state.user.name}
             </Text>
-            <Text>
+            <Text style={styles.textborder}>
               Email{"\t"}
               {this.state.user.email}
             </Text>
-            <Text>
+            <Text style={styles.textborder}>
               College{"\t"}
               {this.state.user.collegeName}
             </Text>
-            <Text>
+            <Text style={styles.textborder}>
               Present Address{"\t"}
               {this.state.user.presentAddress}
             </Text>
-            <Text>
+            <Text style={styles.textborder}>
               Phone Number{"\t"}
               {this.state.user.phoneNumber}
             </Text>
             <Button
               title="Log Out"
               onPress={() => {
+                AsyncStorage.removeItem("name")
+                AsyncStorage.removeItem('username')
                 AsyncStorage.removeItem("secure_token").then(() => {
                   authUser.username = "";
                   authUser.token = "";
+                  authUser.name=""
                   this.setState({
                     isLoading: true,
                     success: false,
@@ -181,7 +185,7 @@ class Profile extends React.Component {
             <Text>{"\n\n"}</Text>
             <Button
               title="Sign Up"
-              onPress={() => navigate("SignUp")}
+              onPress={() => navigate("Signup")}
             />
           </React.Fragment>
         );

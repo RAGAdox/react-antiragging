@@ -101,6 +101,7 @@ class Login extends React.Component {
       if (responseJson.success == true) {
         authUser.username = details.username;
         authUser.token = responseJson.token;
+        authUser.name=responseJson.name
         //await SecureStore.setItemAsync('secure_token',responseJson.token);
         await AsyncStorage.setItem("secure_token", responseJson.token).then(
           () => console.warn("token saved" + responseJson.token)
@@ -112,6 +113,7 @@ class Login extends React.Component {
           success: responseJson.success,
           message: responseJson.message
         });
+        await AsyncStorage.setItem("name",responseJson.name)
       } else {
         this.setState({
           token: "Invalid",
@@ -139,6 +141,7 @@ class Login extends React.Component {
         <TextInput
           style={styles.input}
           placeholder="Password"
+          secureTextEntry={true}
           value={this.state.password}
           editable={this.editable()}
           onChangeText={password => this.setState({ password })}

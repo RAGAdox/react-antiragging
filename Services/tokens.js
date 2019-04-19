@@ -1,6 +1,7 @@
 const authUser = {
   username: "",
-  token: ""
+  token: "",
+  name:''
 };
 /*async function tkn(){
     authUser.token=await AsyncStorage.getItem('secure_token'),

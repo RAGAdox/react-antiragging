@@ -8,7 +8,17 @@ const styles = StyleSheet.create({
   },
   text: {
     justifyContent: "center",
-    alignSelf: "stretch"
+  },
+  textborder:{
+    fontSize:20,
+    fontWeight:'bold',
+    margin:3,
+    borderRadius:10,
+    borderWidth:1,
+    borderColor:'#010101',
+    alignSelf:'stretch',
+    justifyContent:'space-evenly',
+    padding:5,
   },
   heading: {
     fontSize: 20,

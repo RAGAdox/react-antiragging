@@ -43,7 +43,8 @@ class Home extends React.Component {
         fetch(urlAPI.url + "/passauth/checktoken", {
           method: "GET",
           headers: {
-            Authorization: "Bearer " + this.state.token
+            Authorization: "Bearer " + this.state.token,
+            username:this.state.username
           }
         })
           .then(response => response.json())
@@ -51,8 +52,9 @@ class Home extends React.Component {
             this.setState({
               isLoading: false,
               message: responseJSON.message,
-              success: responseJSON.success
+              success: responseJSON.success,
             });
+            authUser.name=responseJSON.name
           }).then(()=>this.forceUpdate());
       });
     }
@@ -63,16 +65,20 @@ class Home extends React.Component {
   async tkn() {
     this.setState({
       token: await AsyncStorage.getItem("secure_token"),
+      username:await AsyncStorage.getItem("username")
     });
     authUser.token=await AsyncStorage.getItem("secure_token")
     authUser.username=await AsyncStorage.getItem("username")
+    authUser.name=await AsyncStorage.getItem("name")
   }
   componentDidMount() {
     return this.tkn().then(() => {
       fetch(urlAPI.url + "/passauth/checktoken", {
         method: "GET",
         headers: {
-          Authorization: "Bearer " + this.state.token
+          Authorization: "Bearer " + this.state.token,
+          username:this.state.username
+
         }
       })
         .then(response => response.json())
@@ -96,7 +102,7 @@ class Home extends React.Component {
       );
     }
     if (this.state.success == false) {
-      console.warn(this.state.success + this.state.message + this.state.token);
+      //console.warn(this.state.success + this.state.message + this.state.token);
       return (
         <View style={styles.container}>
           <Text>Must login First</Text>
@@ -118,6 +124,7 @@ class Home extends React.Component {
     if (this.state.success == true) {
       return (
         <View style={styles.container}>
+          <Text style={styles.text}>Welcome {authUser.name}{'\n\n'}</Text>
           <Button
             style={styles.button}
             title="COMPLAIN"

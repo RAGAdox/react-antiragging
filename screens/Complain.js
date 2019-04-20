@@ -1,6 +1,7 @@
 import React from 'react';
 import {Component} from 'react-native';
 import { ActivityIndicator,TextInput,Button, Text, View ,Platform} from 'react-native';
+import ActionBar from 'react-native-action-bar'
 import { Constants, Location, Permissions } from 'expo';
 import styles from './stylesheet/style';
 import authUser from '../Services/tokens'
@@ -111,11 +112,16 @@ class Complain extends React.Component{
     }
     render(){
     return(
+      <View>
+          <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}></ActionBar>
         <View style={styles.container}>
-            <Text>Complain Against Ragging</Text>
+            <Text style={styles.heading}>Complain Against Ragging</Text>
             <TextInput
           style={styles.input}
           editable={this.editable()}
+          value={this.state.ragger}
           placeholder="Name of the Ragger"
           onChangeText={(ragger) => this.setState({ragger})}
         />
@@ -125,6 +131,7 @@ class Complain extends React.Component{
             <Text>{this.state.message}</Text>
             {this.showLogin()}
         </View>
+      </View>
     )
     }
 }

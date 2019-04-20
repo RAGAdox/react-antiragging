@@ -1,13 +1,32 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     backgroundColor: "#ffffff",
-    alignItems: "center",
+    //alignItems: "center",
     padding: "10%"
+  },
+  scroller:{
+    backgroundColor: "#ffffff",
+    //alignItems: "center",
+    paddingBottom:"20%",
+    margin:10,
   },
   text: {
     justifyContent: "center",
+  },
+  bar:{
+    marginTop:24,
+    backgroundColor:"#0c0c0c",
+
+  },
+  card:{
+    backgroundColor:'#f0f0f0',
+    borderColor:'#fcfcfc',
+    borderRadius:10,
+    borderWidth:2,
+    marginTop:10,
+    padding:10
   },
   textborder:{
     fontSize:20,
@@ -39,7 +58,7 @@ const styles = StyleSheet.create({
     padding: 3
   },
   forms: {
-    flex: 1,
+    //flex: 1,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: "#d6d7da",

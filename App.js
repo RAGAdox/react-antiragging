@@ -11,14 +11,17 @@ import ProfileScreen from "./screens/Profile";
 import SignUpScreen from "./screens/Signup";
 import ComplainScreen from "./screens/Complain";
 import HelpScreen from "./screens/Help";
+import MembersScreen from './screens/Members';
 import authUser from "./Services/tokens";
+import { ToolbarAndroid } from "react-native-gesture-handler";
 const MainNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
   Login: { screen: LoginScreen },
   Profile: { screen: ProfileScreen },
   Signup: { screen: SignUpScreen },
   Complain: { screen: ComplainScreen },
-  Help: { screen: HelpScreen }
+  Help: { screen: HelpScreen },
+  Members:{screen:MembersScreen},
 });
 const TabNavigator = createBottomTabNavigator({
   Home: { screen: HomeScreen },
@@ -30,7 +33,9 @@ const MyDrawerNavigator = createDrawerNavigator({
   Profile: { screen: ProfileScreen },
   Signup: { screen: SignUpScreen },
   Complain: { screen: ComplainScreen },
-  Help: { screen: HelpScreen }
+  Help: { screen: HelpScreen },
+  Members:{screen:MembersScreen},
+
 });
 class App extends React.Component{
   constructor(props){
@@ -43,6 +48,7 @@ class App extends React.Component{
     }
     this.CheckToken=this.CheckToken.bind(this);
   }
+  
   static username='ADMIN'
   async tkn() {
     this.setState({
@@ -69,7 +75,7 @@ class App extends React.Component{
         });
     }).then('Component Mounted in App.js');
   }
-  
+ 
 }
 App = createAppContainer(MyDrawerNavigator);
 export default App;

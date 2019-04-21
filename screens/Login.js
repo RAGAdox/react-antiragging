@@ -8,6 +8,7 @@ import {
   TextInput,
   AsyncStorage
 } from "react-native";
+import ActionBar from 'react-native-action-bar'
 import styles from "./stylesheet/style";
 let uname = "admin",
   upass = "admin";
@@ -129,8 +130,11 @@ class Login extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
+      <View>
+          <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}></ActionBar>
       <View style={styles.container}>
-        <Text>this is Login</Text>
         <TextInput
           style={styles.input}
           placeholder="Username"
@@ -157,6 +161,7 @@ class Login extends React.Component {
           }}
         />
         <Text>{this.state.message}</Text>
+      </View>
       </View>
     );
   }

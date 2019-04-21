@@ -2,6 +2,7 @@ import React from 'react';
 import {Component} from 'react-native';
 import { ActivityIndicator,Button, Text, View,Platform } from 'react-native';
 import { Constants, Location, Permissions } from 'expo';
+import ActionBar from 'react-native-action-bar'
 import styles from './stylesheet/style';
 import authUser from '../Services/tokens'
 import urlAPI from '../config';
@@ -111,8 +112,12 @@ class Help extends React.Component{
     render(){
     const { navigate } = this.props.navigation;
     return(
+      <View>
+          <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}></ActionBar>
         <View style={styles.container}>
-            <Text>Complain Against Ragging</Text>
+            <Text style={styles.heading}>Help a Friend</Text>
             <TextInput
           style={styles.input}
           editable={this.editable()}
@@ -131,6 +136,7 @@ class Help extends React.Component{
                 onPress={()=>{this.postComplainAPI().then(()=>console.warn('Complain Executed := '+JSON.stringify(this.state.location.coords)))}}></Button>
             <Text>{this.state.message}</Text>
             {this.showLogin()}
+        </View>
         </View>
     )
     }

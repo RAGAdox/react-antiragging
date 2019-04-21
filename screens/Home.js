@@ -7,8 +7,11 @@ import {
   ActivityIndicator,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  ToolbarAndroid,
+  StatusBar
 } from "react-native";
+import ActionBar from 'react-native-action-bar';
 import styles from "./stylesheet/style";
 import urlAPI from "../config";
 import authUser from "../Services/tokens";
@@ -91,22 +94,39 @@ class Home extends React.Component {
         });
     });
   }
-
+  showIndicator(){
+    if(authUser.username)
+      return <React.Fragment><ActivityIndicator /></React.Fragment>
+  }
   render() {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
+        <View>
+          <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}></ActionBar>
         <View style={styles.container}>
           <ActivityIndicator />
+        </View>
         </View>
       );
     }
     if (this.state.success == false) {
       //console.warn(this.state.success + this.state.message + this.state.token);
       return (
+        <View>
+          <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}
+    >
+    </ActionBar>
         <View style={styles.container}>
-          <Text>Must login First</Text>
+          <Text style={styles.heading}>Must login First</Text>
           <Button title="Go To Login" onPress={() => navigate("Login")} />
+          {this.showIndicator()}
+          
+        </View>
         </View>
       );
     }
@@ -123,8 +143,13 @@ class Home extends React.Component {
 
     if (this.state.success == true) {
       return (
+        <View>
+        <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}></ActionBar>
         <View style={styles.container}>
-          <Text style={styles.text}>Welcome {authUser.name}{'\n\n'}</Text>
+         
+          <Text style={styles.heading}>Welcome {authUser.name}{'\n\n'}</Text>
           <Button
             style={styles.button}
             title="COMPLAIN"
@@ -132,6 +157,7 @@ class Home extends React.Component {
           />
           <Text>{"\n\n"}</Text>
           <Button title="HELP A FRIEND" onPress={() => navigate("Help")} />
+        </View>
         </View>
       );
     } else {

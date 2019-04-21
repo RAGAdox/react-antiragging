@@ -1,6 +1,8 @@
 import React from "react";
 import { Component } from "react-native";
 import { Text, View, TextInput, Button } from "react-native";
+import ActionBar from 'react-native-action-bar';
+
 import styles from "./stylesheet/style";
 import authUser from "../Services/tokens";
 import { ScrollView } from "react-native-gesture-handler";
@@ -116,9 +118,13 @@ class Signup extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
+      <View>
+          <ActionBar
+    containerStyle={styles.bar}
+    title={this.props.navigation.state.routeName}></ActionBar>
       <View style={styles.container}>
         <Text style={styles.heading}>Signup</Text>
-        <ScrollView style={styles.forms}>
+        <ScrollView style={styles.scroller}>
           <Text style={styles.lable}>Username</Text>
           <TextInput
             editable={this.editable()}
@@ -192,6 +198,7 @@ class Signup extends React.Component {
             });
           }}
         />
+      </View>
       </View>
     );
   }

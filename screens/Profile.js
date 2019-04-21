@@ -7,6 +7,7 @@ import {
   Button,
   AsyncStorage
 } from "react-native";
+import ActionBar from 'react-native-action-bar'
 import styles from "./stylesheet/style";
 import authUser from "../Services/tokens";
 import urlAPI from "../config";
@@ -116,7 +117,10 @@ class Profile extends React.Component {
   render() {
     
 
-    return <View style={styles.container}>{this.whichScreen()}</View>;
+    return (<View>
+      <ActionBar
+containerStyle={styles.bar}
+title={this.props.navigation.state.routeName}></ActionBar><View style={styles.container}>{this.whichScreen()}</View></View>);
   }
   whichScreen() {
     const { navigate } = this.props.navigation;
@@ -131,7 +135,6 @@ class Profile extends React.Component {
       if (this.state.success && this.state.user) {
         return (
           <React.Fragment>
-            <Text>this is Profile{"\n"}</Text>
             <Text style={styles.textborder}>
               Username{"\t"}
               {this.state.user.username}

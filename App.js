@@ -39,45 +39,5 @@ const MyDrawerNavigator = createDrawerNavigator({
   Members: { screen: MembersScreen },
   MyComplains: { screen: MyComplainsScreen }
 });
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isFetching: true,
-      token: '',
-      username: '',
-      success: false
-    }
-    this.CheckToken = this.CheckToken.bind(this);
-  }
-
-  static username = 'ADMIN'
-  async tkn() {
-    this.setState({
-      token: await AsyncStorage.getItem("secure_token"),
-      username: await AsyncStorage.getItem('username')
-    });
-  }
-  CheckToken() {
-    return this.tkn().then(() => {
-      fetch(urlAPI.url + "/passauth/checktoken", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + this.state.token
-        }
-      })
-        .then(response => response.json())
-        .then(responseJSON => {
-          //console.warn(this.state.token + "   success=" + responseJSON.success);
-          this.setState({
-            isFetching: false,
-            message: responseJSON.message,
-            success: responseJSON.success
-          });
-        });
-    }).then('Component Mounted in App.js');
-  }
-
-}
 App = createAppContainer(MyDrawerNavigator);
 export default App;

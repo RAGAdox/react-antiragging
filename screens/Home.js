@@ -11,7 +11,7 @@ import {
   ToolbarAndroid,
   StatusBar
 } from "react-native";
-import ActionBar from 'react-native-action-bar';
+import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
 import urlAPI from "../config";
 import authUser from "../Services/tokens";
@@ -28,7 +28,8 @@ class Home extends React.Component {
       isLoading: false,
       message: "",
       success: false,
-      token: ""
+      token: "",
+      username: ""
     };
   }
   /*didBlurSubscription = this.props.navigation.addListener(
@@ -38,16 +39,16 @@ class Home extends React.Component {
       console.warn('didBlur')
     }
   );*/
-  willFocusSubscription=this.props.navigation.addListener(
-    'didFocus',
-    payload=>{
+  willFocusSubscription = this.props.navigation.addListener(
+    "didFocus",
+    payload => {
       //console.warn('willFocus')
       this.tkn().then(() => {
         fetch(urlAPI.url + "/passauth/checktoken", {
           method: "GET",
           headers: {
             Authorization: "Bearer " + this.state.token,
-            username:this.state.username
+            username: this.state.username
           }
         })
           .then(response => response.json())
@@ -55,24 +56,30 @@ class Home extends React.Component {
             this.setState({
               isLoading: false,
               message: responseJSON.message,
-              success: responseJSON.success,
+              success: responseJSON.success
             });
-            authUser.name=responseJSON.name
-          }).then(()=>this.forceUpdate());
+            if (this.state.success) {
+              authUser.token = this.state.token;
+              authUser.username = this.state.username;
+              authUser.name = responseJSON.name;
+            }
+          })
+          .then(() => this.forceUpdate());
       });
     }
-  )
-  
+  );
+
   // Remove the listener when you are done
   //didBlurSubscription.remove();
   async tkn() {
     this.setState({
       token: await AsyncStorage.getItem("secure_token"),
-      username:await AsyncStorage.getItem("username")
+      username: await AsyncStorage.getItem("username"),
+      name: await AsyncStorage.getItem("name")
     });
-    authUser.token=await AsyncStorage.getItem("secure_token")
+    /*authUser.token=await AsyncStorage.getItem("secure_token")
     authUser.username=await AsyncStorage.getItem("username")
-    authUser.name=await AsyncStorage.getItem("name")
+    authUser.name=await AsyncStorage.getItem("name")*/
   }
   componentDidMount() {
     return this.tkn().then(() => {
@@ -80,8 +87,7 @@ class Home extends React.Component {
         method: "GET",
         headers: {
           Authorization: "Bearer " + this.state.token,
-          username:this.state.username
-
+          username: this.state.username
         }
       })
         .then(response => response.json())
@@ -91,12 +97,21 @@ class Home extends React.Component {
             message: responseJSON.message,
             success: responseJSON.success
           });
+          if (this.state.success) {
+            authUser.token = this.state.token;
+            authUser.username = this.state.username;
+            authUser.name = responseJSON.name;
+          }
         });
     });
   }
-  showIndicator(){
-    if(authUser.username)
-      return <React.Fragment><ActivityIndicator /></React.Fragment>
+  showIndicator() {
+    if (authUser.username)
+      return (
+        <React.Fragment>
+          <ActivityIndicator />
+        </React.Fragment>
+      );
   }
   render() {
     const { navigate } = this.props.navigation;
@@ -104,11 +119,12 @@ class Home extends React.Component {
       return (
         <View>
           <ActionBar
-    containerStyle={styles.bar}
-    title={this.props.navigation.state.routeName}></ActionBar>
-        <View style={styles.container}>
-          <ActivityIndicator />
-        </View>
+            containerStyle={styles.bar}
+            title={this.props.navigation.state.routeName}
+          />
+          <View style={styles.container}>
+            <ActivityIndicator />
+          </View>
         </View>
       );
     }
@@ -117,16 +133,14 @@ class Home extends React.Component {
       return (
         <View>
           <ActionBar
-    containerStyle={styles.bar}
-    title={this.props.navigation.state.routeName}
-    >
-    </ActionBar>
-        <View style={styles.container}>
-          <Text style={styles.heading}>Must login First</Text>
-          <Button title="Go To Login" onPress={() => navigate("Login")} />
-          {this.showIndicator()}
-          
-        </View>
+            containerStyle={styles.bar}
+            title={this.props.navigation.state.routeName}
+          />
+          <View style={styles.container}>
+            <Text style={styles.heading}>Must login First</Text>
+            <Button title="Go To Login" onPress={() => navigate("Login")} />
+            {this.showIndicator()}
+          </View>
         </View>
       );
     }
@@ -144,20 +158,23 @@ class Home extends React.Component {
     if (this.state.success == true) {
       return (
         <View>
-        <ActionBar
-    containerStyle={styles.bar}
-    title={this.props.navigation.state.routeName}></ActionBar>
-        <View style={styles.container}>
-         
-          <Text style={styles.heading}>Welcome {authUser.name}{'\n\n'}</Text>
-          <Button
-            style={styles.button}
-            title="COMPLAIN"
-            onPress={() => navigate("Complain")}
+          <ActionBar
+            containerStyle={styles.bar}
+            title={this.props.navigation.state.routeName}
           />
-          <Text>{"\n\n"}</Text>
-          <Button title="HELP A FRIEND" onPress={() => navigate("Help")} />
-        </View>
+          <View style={styles.container}>
+            <Text style={styles.heading}>
+              Welcome {authUser.name}
+              {"\n\n"}
+            </Text>
+            <Button
+              style={styles.button}
+              title="COMPLAIN"
+              onPress={() => navigate("Complain")}
+            />
+            <Text>{"\n\n"}</Text>
+            <Button title="HELP A FRIEND" onPress={() => navigate("Help")} />
+          </View>
         </View>
       );
     } else {

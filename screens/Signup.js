@@ -1,7 +1,7 @@
 import React from "react";
 import { Component } from "react-native";
 import { Text, View, TextInput, Button } from "react-native";
-import ActionBar from 'react-native-action-bar';
+import ActionBar from "react-native-action-bar";
 
 import styles from "./stylesheet/style";
 import authUser from "../Services/tokens";
@@ -14,6 +14,7 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      validated: false,
       username: "",
       name: "",
       password: "",
@@ -34,18 +35,17 @@ class Signup extends React.Component {
       return false;
     } else return true;
   }
-  willFocusSubscription=this.props.navigation.addListener(
-    'didFocus',
-    payload=>{
-      if(this.editable())
-      {
-        this.setState({message:''})
+  willFocusSubscription = this.props.navigation.addListener(
+    "didFocus",
+    payload => {
+      if (this.editable()) {
+        this.setState({ message: "" });
+      } else {
+        console.warn("editable function returns false");
+        this.setState({ message: "Already Logged in" });
       }
-      else{
-        console.warn('editable function returns false')
-        this.setState({message:'Already Logged in'})
-      }
-    })
+    }
+  );
   async postSaveUser() {
     var users = {
       username: this.state.username,
@@ -119,86 +119,212 @@ class Signup extends React.Component {
     const { navigate } = this.props.navigation;
     return (
       <View>
-          <ActionBar
-    containerStyle={styles.bar}
-    title={this.props.navigation.state.routeName}></ActionBar>
-      <View style={styles.container}>
-        <Text style={styles.heading}>Signup</Text>
-        <ScrollView style={styles.scroller}>
-          <Text style={styles.lable}>Username</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="Username"
-            style={styles.input}
-            onChangeText={username => this.setState({ username })}
-          />
-          <Text style={styles.lable}>Full Name</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="Name"
-            style={styles.input}
-            onChangeText={name => this.setState({ name })}
-          />
-          <Text style={styles.lable}>Password</Text>
-          <TextInput
-            editable={this.editable()}
-            secureTextEntry={true}
-            placeholder="Password"
-            style={styles.input}
-            onChangeText={password => this.setState({ password })}
-          />
-          <Text style={styles.lable}>Confirm Password</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="Confirm Password"
-            style={styles.input}
-            secureTextEntry={true}
-            onChangeText={passwordConfirm => {
-              this.setState({ passwordConfirm });
+        <ActionBar
+          containerStyle={styles.bar}
+          title={this.props.navigation.state.routeName}
+        />
+        <View style={styles.container}>
+          <Text style={styles.heading}>Signup</Text>
+          <ScrollView style={styles.scroller}>
+            <Text style={styles.lable}>Username</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="Username"
+              style={[
+                styles.input,
+                this.state.username == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={username => this.setState({ username })}
+              onBlur={() => {
+                if (this.state.username.length < 5) {
+                  this.setState({
+                    validated: false,
+                    username: "INVALID"
+                  });
+                } else {
+                  this.setState({
+                    validated: true
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>Full Name</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="Name"
+              style={[
+                styles.input,
+                this.state.name == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={name => this.setState({ name })}
+              onBlur={() => {
+                if (this.state.name.length == 0) {
+                  this.setState({
+                    validated: false,
+                    name: "INVALID"
+                  });
+                } else {
+                  this.setState({
+                    validated: true
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>Password</Text>
+            <TextInput
+              editable={this.editable()}
+              secureTextEntry={true}
+              placeholder="Password"
+              style={[
+                styles.input,
+                this.state.password == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={password => this.setState({ password })}
+              onBlur={() => {
+                if (this.state.password.length < 5) {
+                  this.setState({
+                    validated: false,
+                    password: "INVALID"
+                  });
+                } else {
+                  this.setState({
+                    validated: true
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>Confirm Password</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="Confirm Password"
+              style={[
+                styles.input,
+                this.state.passwordConfirm == "INVALID" ? styles.invalid : null
+              ]}
+              secureTextEntry={true}
+              onChangeText={passwordConfirm => {
+                this.setState({ passwordConfirm });
+              }}
+              onBlur={() => {
+                if (this.state.passwordConfirm != this.state.password) {
+                  this.setState({
+                    validated: false,
+                    passwordConfirm: "INVALID"
+                  });
+                } else {
+                  this.setState({
+                    validated: true
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>College Name</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="College Name"
+              style={[
+                styles.input,
+                this.state.collegeName == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={collegeName => this.setState({ collegeName })}
+              onBlur={() => {
+                if (this.state.collegeName.length == 0) {
+                  this.setState({
+                    validated: false,
+                    collegeName: "INVALID"
+                  });
+                } else {
+                  this.setState({
+                    validated: true
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>Present Address</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="Present Address"
+              style={[
+                styles.input,
+                this.state.presentAddress == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={presentAddress => this.setState({ presentAddress })}
+              onBlur={() => {
+                if (this.state.presentAddress.length == 0) {
+                  this.setState({
+                    validated: false,
+                    presentAddress: "INVALID"
+                  });
+                } else {
+                  this.setState({
+                    validated: true
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>Phone Number</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="Phone Number"
+              style={[
+                styles.input,
+                this.state.phoneNumber == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={phoneNumber => this.setState({ phoneNumber })}
+              onBlur={() => {
+                if (
+                  !isNaN(this.state.phoneNumber) &&
+                  this.state.phoneNumber.length == 10
+                ) {
+                  this.setState({
+                    validated: true
+                  });
+                } else {
+                  this.setState({
+                    validated: false,
+                    phoneNumber: "INVALID"
+                  });
+                }
+              }}
+            />
+            <Text style={styles.lable}>Email Address</Text>
+            <TextInput
+              editable={this.editable()}
+              placeholder="Email Adderss"
+              style={[
+                styles.input,
+                this.state.email == "INVALID" ? styles.invalid : null
+              ]}
+              onChangeText={email => this.setState({ email })}
+              onBlur={() => {
+                var re = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+                if (re.test(this.state.email))
+                  this.setState({
+                    validated: true
+                  });
+                else {
+                  console.warn("Invalid Email");
+                  this.setState({
+                    email: "INVALID",
+                    validated: false
+                  });
+                }
+              }}
+            />
+          </ScrollView>
+          <Text>{this.state.warning}</Text>
+          <Text>{this.state.message}</Text>
+          <Button
+            title="Signup"
+            onPress={() => {
+              console.warn("Button Press");
+              this.postSaveUser().then(() => {
+                /*console.warn(this.state.success)*/
+                if (this.state.success == true) navigate("Login");
+              });
             }}
           />
-          <Text style={styles.lable}>College Name</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="College Name"
-            style={styles.input}
-            onChangeText={collegeName => this.setState({ collegeName })}
-          />
-          <Text style={styles.lable}>Present Address</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="Present Address"
-            style={styles.input}
-            onChangeText={presentAddress => this.setState({ presentAddress })}
-          />
-          <Text style={styles.lable}>Phone Number</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="Phone Number"
-            style={styles.input}
-            onChangeText={phoneNumber => this.setState({ phoneNumber })}
-          />
-          <Text style={styles.lable}>Email Address</Text>
-          <TextInput
-            editable={this.editable()}
-            placeholder="Email Adderss"
-            style={styles.input}
-            onChangeText={email => this.setState({ email })}
-          />
-        </ScrollView>
-        <Text>{this.state.warning}</Text>
-        <Text>{this.state.message}</Text>
-        <Button
-          title="Signup"
-          onPress={() => {
-            console.warn("Button Press");
-            this.postSaveUser().then(() => {
-              /*console.warn(this.state.success)*/
-              if (this.state.success == true) navigate("Login");
-            });
-          }}
-        />
-      </View>
+        </View>
       </View>
     );
   }

@@ -12,6 +12,7 @@ import SignUpScreen from "./screens/Signup";
 import ComplainScreen from "./screens/Complain";
 import HelpScreen from "./screens/Help";
 import MembersScreen from './screens/Members';
+import MyComplainsScreen from './screens/MyComplains'
 import authUser from "./Services/tokens";
 import { ToolbarAndroid } from "react-native-gesture-handler";
 const MainNavigator = createStackNavigator({
@@ -21,7 +22,8 @@ const MainNavigator = createStackNavigator({
   Signup: { screen: SignUpScreen },
   Complain: { screen: ComplainScreen },
   Help: { screen: HelpScreen },
-  Members:{screen:MembersScreen},
+  Members: { screen: MembersScreen },
+  MyComplains: { screen: MyComplainsScreen }
 });
 const TabNavigator = createBottomTabNavigator({
   Home: { screen: HomeScreen },
@@ -34,48 +36,8 @@ const MyDrawerNavigator = createDrawerNavigator({
   Signup: { screen: SignUpScreen },
   Complain: { screen: ComplainScreen },
   Help: { screen: HelpScreen },
-  Members:{screen:MembersScreen},
-
+  Members: { screen: MembersScreen },
+  MyComplains: { screen: MyComplainsScreen }
 });
-class App extends React.Component{
-  constructor(props){
-    super(props);
-    this.state={
-      isFetching:true,
-      token:'',
-      username:'',
-      success:false
-    }
-    this.CheckToken=this.CheckToken.bind(this);
-  }
-  
-  static username='ADMIN'
-  async tkn() {
-    this.setState({
-      token: await AsyncStorage.getItem("secure_token"),
-      username:await AsyncStorage.getItem('username')
-    });
-  }
-  CheckToken() {
-    return this.tkn().then(() => {
-      fetch(urlAPI.url + "/passauth/checktoken", {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + this.state.token
-        }
-      })
-        .then(response => response.json())
-        .then(responseJSON => {
-          //console.warn(this.state.token + "   success=" + responseJSON.success);
-          this.setState({
-            isFetching: false,
-            message: responseJSON.message,
-            success: responseJSON.success
-          });
-        });
-    }).then('Component Mounted in App.js');
-  }
- 
-}
 App = createAppContainer(MyDrawerNavigator);
 export default App;

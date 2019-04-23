@@ -117,7 +117,7 @@ class Home extends React.Component {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
-        <View>
+        <View style={styles.main}>
           <ActionBar
             containerStyle={styles.bar}
             title={this.props.navigation.state.routeName}
@@ -131,7 +131,7 @@ class Home extends React.Component {
     if (this.state.success == false) {
       //console.warn(this.state.success + this.state.message + this.state.token);
       return (
-        <View>
+        <View style={styles.main}>
           <ActionBar
             containerStyle={styles.bar}
             title={this.props.navigation.state.routeName}
@@ -157,7 +157,7 @@ class Home extends React.Component {
 
     if (this.state.success == true) {
       return (
-        <View>
+        <View style={styles.main}>
           <ActionBar
             containerStyle={styles.bar}
             title={this.props.navigation.state.routeName}
@@ -179,7 +179,7 @@ class Home extends React.Component {
       );
     } else {
       return (
-        <View>
+        <View style={styles.main}>
           <Login />
         </View>
       );

@@ -47,6 +47,34 @@ class MyColplains extends React.Component {
         });
     }
   );
+  willFocusSubscription = this.props.navigation.addListener(
+    "didFocus",
+    payload => {
+      fetch(urlAPI.url + "/passauth/complainAll", {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + authUser.token,
+          username: authUser.username
+        }
+      })
+        .then(response => response.json())
+        .then(responseJSON => {
+          if ((responseJSON.success = true)) {
+            this.setState({
+              isLoading: false,
+              success: true,
+              complains: responseJSON.complain
+            });
+          } else {
+            this.setState({
+              isLoading: false,
+              success: false,
+              complains: ""
+            });
+          }
+        });
+    }
+  );
   componentDidMount() {
     fetch(urlAPI.url + "/passauth/complainAll", {
       method: "GET",
@@ -79,9 +107,13 @@ class MyColplains extends React.Component {
           <View style={styles.card}>
             <Text>Name of Victim :-{data.name}</Text>
             <Text>Name of Ragger :-{data.ragger}</Text>
+            <Text>
+              Details :-{data.details != "undefined" ? data.details : ""}
+            </Text>
             <Text>Date of Complain :- {data.created_at}</Text>
-            <Text>Attended Status :-</Text>
-            <CheckBox disabled value={data.attendedStatus} />
+            <Text>
+              Attended Status :-{data.attendedStatus ? "true" : "false"}
+            </Text>
           </View>
         );
       });

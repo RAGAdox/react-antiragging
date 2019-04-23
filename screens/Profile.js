@@ -7,7 +7,7 @@ import {
   Button,
   AsyncStorage
 } from "react-native";
-import ActionBar from 'react-native-action-bar'
+import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
 import authUser from "../Services/tokens";
 import urlAPI from "../config";
@@ -16,7 +16,7 @@ class Profile extends React.Component {
   static navigationOptions = {
     title: "Profile"
   };
- 
+
   constructor(props) {
     super(props);
     this.state = {
@@ -58,14 +58,13 @@ class Profile extends React.Component {
       });
       let responseJson = await response.json();
       //console.warn(responseJson)
-      if ((responseJson.success = true)){
+      if ((responseJson.success = true)) {
         this.setState({
           success: responseJson.success,
           user: responseJson.user,
           message: responseJson.message
         });
-      }
-      else if ((responseJson.success = false))
+      } else if ((responseJson.success = false))
         this.setState({
           success: responseJson.success,
           message: responseJson.message
@@ -115,12 +114,15 @@ class Profile extends React.Component {
     }*/
 
   render() {
-    
-
-    return (<View>
-      <ActionBar
-containerStyle={styles.bar}
-title={this.props.navigation.state.routeName}></ActionBar><View style={styles.container}>{this.whichScreen()}</View></View>);
+    return (
+      <View style={styles.main}>
+        <ActionBar
+          containerStyle={styles.bar}
+          title={this.props.navigation.state.routeName}
+        />
+        <View style={styles.container}>{this.whichScreen()}</View>
+      </View>
+    );
   }
   whichScreen() {
     const { navigate } = this.props.navigation;
@@ -162,21 +164,22 @@ title={this.props.navigation.state.routeName}></ActionBar><View style={styles.co
             <Button
               title="Log Out"
               onPress={() => {
-                AsyncStorage.removeItem("name")
-                AsyncStorage.removeItem('username')
-                AsyncStorage.removeItem("secure_token").then(() => {
-                  authUser.username = "";
-                  authUser.token = "";
-                  authUser.name=""
-                  this.setState({
-                    isLoading: true,
-                    success: false,
-                    message: "",
-                    user: ""
-                  });
-                  console.warn("Removed");
-                }).then(()=>navigate('Login'));
-                
+                AsyncStorage.removeItem("name");
+                AsyncStorage.removeItem("username");
+                AsyncStorage.removeItem("secure_token")
+                  .then(() => {
+                    authUser.username = "";
+                    authUser.token = "";
+                    authUser.name = "";
+                    this.setState({
+                      isLoading: true,
+                      success: false,
+                      message: "",
+                      user: ""
+                    });
+                    console.warn("Removed");
+                  })
+                  .then(() => navigate("Login"));
               }}
             />
           </React.Fragment>
@@ -186,10 +189,7 @@ title={this.props.navigation.state.routeName}></ActionBar><View style={styles.co
           <React.Fragment>
             <Button title="Login" onPress={() => navigate("Login")} />
             <Text>{"\n\n"}</Text>
-            <Button
-              title="Sign Up"
-              onPress={() => navigate("Signup")}
-            />
+            <Button title="Sign Up" onPress={() => navigate("Signup")} />
           </React.Fragment>
         );
       }

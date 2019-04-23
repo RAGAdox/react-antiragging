@@ -8,7 +8,7 @@ import {
   TextInput,
   AsyncStorage
 } from "react-native";
-import ActionBar from 'react-native-action-bar'
+import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
 let uname = "admin",
   upass = "admin";
@@ -43,18 +43,17 @@ class Login extends React.Component {
       });
     }
   );
-  willFocusSubscription=this.props.navigation.addListener(
-    'didFocus',
-    payload=>{
-      if(this.editable())
-      {
-        this.setState({message:''})
+  willFocusSubscription = this.props.navigation.addListener(
+    "didFocus",
+    payload => {
+      if (this.editable()) {
+        this.setState({ message: "" });
+      } else {
+        console.warn("editable function returns false");
+        this.setState({ message: "Already Logged in" });
       }
-      else{
-        console.warn('editable function returns false')
-        this.setState({message:'Already Logged in'})
-      }
-    })
+    }
+  );
   async getMsgFromApi() {
     try {
       let response = await fetch(urlAPI.url);
@@ -102,7 +101,7 @@ class Login extends React.Component {
       if (responseJson.success == true) {
         authUser.username = details.username;
         authUser.token = responseJson.token;
-        authUser.name=responseJson.name
+        authUser.name = responseJson.name;
         //await SecureStore.setItemAsync('secure_token',responseJson.token);
         await AsyncStorage.setItem("secure_token", responseJson.token).then(
           () => console.warn("token saved" + responseJson.token)
@@ -114,7 +113,7 @@ class Login extends React.Component {
           success: responseJson.success,
           message: responseJson.message
         });
-        await AsyncStorage.setItem("name",responseJson.name)
+        await AsyncStorage.setItem("name", responseJson.name);
       } else {
         this.setState({
           token: "Invalid",
@@ -130,38 +129,39 @@ class Login extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View>
-          <ActionBar
-    containerStyle={styles.bar}
-    title={this.props.navigation.state.routeName}></ActionBar>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.input}
-          placeholder="Username"
-          value={this.state.username}
-          editable={this.editable()}
-          onChangeText={username => this.setState({ username })}
+      <View style={styles.main}>
+        <ActionBar
+          containerStyle={styles.bar}
+          title={this.props.navigation.state.routeName}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          secureTextEntry={true}
-          value={this.state.password}
-          editable={this.editable()}
-          onChangeText={password => this.setState({ password })}
-        />
-        <Button
-          title="Login"
-          onPress={() => {
-            console.warn("press");
-            this.getTokenFromAPI().then(() => {
-              console.warn("get API");
-              if (this.state.success) navigate("Profile");
-            });
-          }}
-        />
-        <Text>{this.state.message}</Text>
-      </View>
+        <View style={styles.container}>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            value={this.state.username}
+            editable={this.editable()}
+            onChangeText={username => this.setState({ username })}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            value={this.state.password}
+            editable={this.editable()}
+            onChangeText={password => this.setState({ password })}
+          />
+          <Button
+            title="Login"
+            onPress={() => {
+              console.warn("press");
+              this.getTokenFromAPI().then(() => {
+                console.warn("get API");
+                if (this.state.success) navigate("Profile");
+              });
+            }}
+          />
+          <Text>{this.state.message}</Text>
+        </View>
       </View>
     );
   }

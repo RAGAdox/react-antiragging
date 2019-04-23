@@ -22,7 +22,11 @@ class Help extends React.Component {
     };
   }
   editable() {
-    if (authUser.username && authUser.token) {
+    if (
+      authUser.username &&
+      authUser.token &&
+      this.state.errorMessage == null
+    ) {
       return true;
     } else return false;
   }
@@ -113,7 +117,7 @@ class Help extends React.Component {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <View>
+      <View style={styles.main}>
         <ActionBar
           containerStyle={styles.bar}
           title={this.props.navigation.state.routeName}
@@ -151,6 +155,7 @@ class Help extends React.Component {
             }}
           />
           <Text>{this.state.message}</Text>
+          <Text>{this.state.errorMessage}</Text>
           {this.showLogin()}
         </View>
       </View>

@@ -90,7 +90,7 @@ class MyColplains extends React.Component {
     const { navigate } = this.props.navigation;
     if (this.state.isLoading) {
       return (
-        <View>
+        <View style={styles.main}>
           <ActionBar
             containerStyle={styles.bar}
             title={this.props.navigation.state.routeName}
@@ -102,7 +102,7 @@ class MyColplains extends React.Component {
       );
     } else if (!this.state.isLoading && this.state.success) {
       return (
-        <View>
+        <View style={styles.main}>
           <ActionBar
             containerStyle={styles.bar}
             title={this.props.navigation.state.routeName}

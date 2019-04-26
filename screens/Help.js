@@ -1,6 +1,13 @@
 import React from "react";
 import { Component } from "react-native";
-import { ActivityIndicator, Button, Text, View, Platform } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  Text,
+  View,
+  Platform,
+  Picker
+} from "react-native";
 import { Constants, Location, Permissions } from "expo";
 import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
@@ -18,7 +25,8 @@ class Help extends React.Component {
       name: "",
       message: "",
       location: null,
-      errorMessage: null
+      errorMessage: null,
+      showDetails: false
     };
   }
   editable() {
@@ -114,6 +122,20 @@ class Help extends React.Component {
       console.error(error);
     }
   }
+  showDetails() {
+    if (this.state.showDetails)
+      return (
+        <React.Fragment>
+          <TextInput
+            style={styles.input}
+            editable={this.editable()}
+            placeholder="Details"
+            onChangeText={details => this.setState({ details })}
+          />
+        </React.Fragment>
+      );
+    else return <React.Fragment />;
+  }
   render() {
     const { navigate } = this.props.navigation;
     return (
@@ -136,12 +158,28 @@ class Help extends React.Component {
             placeholder="Name of the Ragger"
             onChangeText={ragger => this.setState({ ragger })}
           />
-          <TextInput
+          <Picker
+            selectedValue={this.state.details}
+            //style={{ height: 50, width: 100 }}
             style={styles.input}
-            editable={this.editable()}
-            placeholder="Details"
-            onChangeText={details => this.setState({ details })}
-          />
+            onValueChange={(itemValue, itemIndex) => {
+              this.setState({ details: itemValue });
+
+              if (itemIndex != 3) this.setState({ showDetails: false });
+              else {
+                this.setState({ showDetails: true });
+              }
+            }}
+          >
+            <Picker.Item
+              label="Dress code ragging"
+              value="Dress code ragging"
+            />
+            <Picker.Item label="Verbal abuse" value="Verbal abuse" />
+            <Picker.Item label="Physical abuse" value="Physical abuse" />
+            <Picker.Item label="Other" value="other" />
+          </Picker>
+          {this.showDetails()}
           <Button
             title="Help A Friend"
             onPress={() => {

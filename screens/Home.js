@@ -8,6 +8,7 @@ import {
   Text,
   View,
   AsyncStorage,
+  TouchableOpacity,
   ToolbarAndroid,
   StatusBar
 } from "react-native";
@@ -138,7 +139,13 @@ class Home extends React.Component {
           />
           <View style={styles.container}>
             <Text style={styles.heading}>Must login First</Text>
-            <Button title="Go To Login" onPress={() => navigate("Login")} />
+            <TouchableOpacity
+              style={styles.button}
+              title="Go To Login"
+              onPress={() => navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Go To Login</Text>
+            </TouchableOpacity>
             {this.showIndicator()}
           </View>
         </View>
@@ -167,13 +174,21 @@ class Home extends React.Component {
               Welcome {authUser.name}
               {"\n\n"}
             </Text>
-            <Button
+            <TouchableOpacity
               style={styles.button}
               title="COMPLAIN"
               onPress={() => navigate("Complain")}
-            />
+            >
+              <Text style={styles.buttonText}>Complain</Text>
+            </TouchableOpacity>
             <Text>{"\n\n"}</Text>
-            <Button title="HELP A FRIEND" onPress={() => navigate("Help")} />
+            <TouchableOpacity
+              style={styles.button}
+              title="HELP A FRIEND"
+              onPress={() => navigate("Help")}
+            >
+              <Text style={styles.buttonText}>Help A Friend</Text>
+            </TouchableOpacity>
           </View>
         </View>
       );

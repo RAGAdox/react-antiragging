@@ -58,14 +58,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     margin: 3
   },
+  buttonText: {
+    fontSize: 17,
+    fontWeight: "bold",
+    margin: 3
+  },
   button: {
     borderRadius: 10,
+    borderColor: "#d6d7da",
+    alignItems: "center",
     borderWidth: 1,
-    backgroundColor: "#010101"
+    padding: 5,
+    backgroundColor: "#958FFF"
   },
   input: {
-    borderRadius: 4,
-    borderWidth: 0.5,
+    borderRadius: 10,
+    borderWidth: 0.7,
     borderColor: "#d6d7da",
     alignSelf: "stretch",
     margin: 5,

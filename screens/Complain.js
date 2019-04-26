@@ -7,10 +7,12 @@ import {
   Text,
   View,
   Picker,
-  Platform
+  Platform,
+  TouchableOpacity,
+  Image
 } from "react-native";
 import ActionBar from "react-native-action-bar";
-import { Constants, Location, Permissions } from "expo";
+import { Constants, Location, Permissions, ImagePicker } from "expo";
 import styles from "./stylesheet/style";
 import authUser from "../Services/tokens";
 import urlAPI from "../config";
@@ -27,7 +29,8 @@ class Complain extends React.Component {
       location: null,
       errorMessage: null,
       showDetails: false,
-      details: ""
+      details: "",
+      image: null
     };
   }
   editable() {
@@ -55,7 +58,13 @@ class Complain extends React.Component {
     if (!this.editable()) {
       return (
         <React.Fragment>
-          <Button title="Login" onPress={() => navigate("Login")} />
+          <TouchableOpacity
+            style={styles.button}
+            title="Login"
+            onPress={() => navigate("Login")}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
         </React.Fragment>
       );
     }
@@ -138,9 +147,22 @@ class Complain extends React.Component {
       );
     else return <React.Fragment />;
   }
+  _pickImage = async () => {
+    console.warn("Image Picker function");
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  };
   render() {
     const { navigate } = this.props.navigation;
-
+    let { image } = this.state;
     return (
       <View style={styles.main}>
         <ActionBar
@@ -178,7 +200,9 @@ class Complain extends React.Component {
             <Picker.Item label="Other" value="other" />
           </Picker>
           {this.showDetails()}
-          <Button
+
+          <TouchableOpacity
+            style={styles.button}
             title="Complain"
             onPress={() => {
               this.postComplainAPI().then(() => {
@@ -189,7 +213,9 @@ class Complain extends React.Component {
                 navigate("MyComplains");
               });
             }}
-          />
+          >
+            <Text style={styles.buttonText}>Complain</Text>
+          </TouchableOpacity>
           <Text>{this.state.message}</Text>
           <Text>{this.state.errorMessage}</Text>
           {this.showLogin()}

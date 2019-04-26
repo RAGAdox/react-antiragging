@@ -68,9 +68,6 @@ class Login extends React.Component {
   }
   editable() {
     if (authUser.username && authUser.token) {
-      /*this.setState({
-        message: "Already Logged in"
-      });*/
       return false;
     } else return true;
   }

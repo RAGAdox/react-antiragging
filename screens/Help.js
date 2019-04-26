@@ -6,6 +6,7 @@ import {
   Text,
   View,
   Platform,
+  TouchableOpacity,
   Picker
 } from "react-native";
 import { Constants, Location, Permissions } from "expo";
@@ -54,7 +55,13 @@ class Help extends React.Component {
     if (!this.editable()) {
       return (
         <React.Fragment>
-          <Button title="Login" onPress={() => navigate("Login")} />
+          <TouchableOpacity
+            style={styles.button}
+            title="Login"
+            onPress={() => navigate("Login")}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
         </React.Fragment>
       );
     }

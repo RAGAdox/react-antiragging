@@ -5,7 +5,8 @@ import {
   Text,
   View,
   Button,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from "react-native";
 import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
@@ -161,7 +162,8 @@ class Profile extends React.Component {
               Phone Number{"\t"}
               {this.state.user.phoneNumber}
             </Text>
-            <Button
+            <TouchableOpacity
+              style={styles.button}
               title="Log Out"
               onPress={() => {
                 AsyncStorage.removeItem("name");
@@ -181,15 +183,29 @@ class Profile extends React.Component {
                   })
                   .then(() => navigate("Login"));
               }}
-            />
+            >
+              <Text style={styles.buttonText}>Logout</Text>
+            </TouchableOpacity>
           </React.Fragment>
         );
       } else {
         return (
           <React.Fragment>
-            <Button title="Login" onPress={() => navigate("Login")} />
+            <TouchableOpacity
+              style={styles.button}
+              title="Login"
+              onPress={() => navigate("Login")}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
             <Text>{"\n\n"}</Text>
-            <Button title="Sign Up" onPress={() => navigate("Signup")} />
+            <TouchableOpacity
+              style={styles.button}
+              title="Sign Up"
+              onPress={() => navigate("Signup")}
+            >
+              <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
           </React.Fragment>
         );
       }

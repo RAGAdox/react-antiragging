@@ -6,7 +6,8 @@ import {
   TextInput,
   Button,
   Keyboard,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  TouchableOpacity
 } from "react-native";
 import ActionBar from "react-native-action-bar";
 
@@ -351,7 +352,8 @@ class Signup extends React.Component {
           />
           <Text>{this.state.warning}</Text>
           <Text>{this.state.message}</Text>
-          <Button
+          <TouchableOpacity
+            style={styles.button}
             title="Signup"
             onPress={() => {
               console.warn("Button Press");
@@ -372,7 +374,9 @@ class Signup extends React.Component {
                 });
               }
             }}
-          />
+          >
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     );

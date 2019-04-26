@@ -6,7 +6,8 @@ import {
   View,
   Button,
   TextInput,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from "react-native";
 import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
@@ -147,8 +148,8 @@ class Login extends React.Component {
             editable={this.editable()}
             onChangeText={password => this.setState({ password })}
           />
-          <Button
-            title="Login"
+          <TouchableOpacity
+            style={styles.button}
             onPress={() => {
               console.warn("press");
               this.getTokenFromAPI().then(() => {
@@ -156,7 +157,9 @@ class Login extends React.Component {
                 if (this.state.success) navigate("Profile");
               });
             }}
-          />
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
           <Text>{this.state.message}</Text>
         </View>
       </View>

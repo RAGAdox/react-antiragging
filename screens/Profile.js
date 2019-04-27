@@ -28,7 +28,7 @@ class Profile extends React.Component {
     };
   }
   willFocusSubscription = this.props.navigation.addListener(
-    "didFocus",
+    "willFocus",
     payload => {
       this.getMsgFromApi().then(() => {
         console.warn("component Mount");

@@ -214,7 +214,7 @@ class Complain extends React.Component {
               });
             }}
           >
-            <Text style={styles.buttonText}>Complain</Text>
+            <Text style={styles.buttonText}>Register Complain</Text>
           </TouchableOpacity>
           <Text>{this.state.message}</Text>
           <Text>{this.state.errorMessage}</Text>

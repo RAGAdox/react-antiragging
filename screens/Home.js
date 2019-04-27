@@ -1,16 +1,11 @@
 import React from "react";
 import { Component } from "react-native";
 import {
-  Button,
-  StyleSheet,
-  FlatList,
   ActivityIndicator,
   Text,
   View,
   AsyncStorage,
-  TouchableOpacity,
-  ToolbarAndroid,
-  StatusBar
+  TouchableOpacity
 } from "react-native";
 import ActionBar from "react-native-action-bar";
 import styles from "./stylesheet/style";
@@ -33,15 +28,8 @@ class Home extends React.Component {
       username: ""
     };
   }
-  /*didBlurSubscription = this.props.navigation.addListener(
-    'didBlur',
-    payload => {
-      console.debug('didBlur', payload);
-      console.warn('didBlur')
-    }
-  );*/
   willFocusSubscription = this.props.navigation.addListener(
-    "didFocus",
+    "willFocus",
     payload => {
       //console.warn('willFocus')
       this.tkn().then(() => {
@@ -70,17 +58,12 @@ class Home extends React.Component {
     }
   );
 
-  // Remove the listener when you are done
-  //didBlurSubscription.remove();
   async tkn() {
     this.setState({
       token: await AsyncStorage.getItem("secure_token"),
       username: await AsyncStorage.getItem("username"),
       name: await AsyncStorage.getItem("name")
     });
-    /*authUser.token=await AsyncStorage.getItem("secure_token")
-    authUser.username=await AsyncStorage.getItem("username")
-    authUser.name=await AsyncStorage.getItem("name")*/
   }
   componentDidMount() {
     return this.tkn().then(() => {
@@ -169,6 +152,7 @@ class Home extends React.Component {
             containerStyle={styles.bar}
             title={this.props.navigation.state.routeName}
           />
+
           <View style={styles.container}>
             <Text style={styles.heading}>
               Welcome {authUser.name}

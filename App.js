@@ -11,10 +11,8 @@ import ProfileScreen from "./screens/Profile";
 import SignUpScreen from "./screens/Signup";
 import ComplainScreen from "./screens/Complain";
 import HelpScreen from "./screens/Help";
-import MembersScreen from './screens/Members';
-import MyComplainsScreen from './screens/MyComplains'
-import authUser from "./Services/tokens";
-import { ToolbarAndroid } from "react-native-gesture-handler";
+import MembersScreen from "./screens/Members";
+import MyComplainsScreen from "./screens/MyComplains";
 const MainNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
   Login: { screen: LoginScreen },

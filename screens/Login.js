@@ -45,7 +45,7 @@ class Login extends React.Component {
     }
   );
   willFocusSubscription = this.props.navigation.addListener(
-    "didFocus",
+    "willFocus",
     payload => {
       if (this.editable()) {
         this.setState({ message: "" });
@@ -126,6 +126,8 @@ class Login extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
+    const { goBack } = this.props.navigation;
+
     return (
       <View style={styles.main}>
         <ActionBar
@@ -155,6 +157,7 @@ class Login extends React.Component {
               this.getTokenFromAPI().then(() => {
                 console.warn("get API");
                 if (this.state.success) navigate("Profile");
+                //if (this.state.success) goBack(null);
               });
             }}
           >

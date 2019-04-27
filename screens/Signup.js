@@ -69,7 +69,7 @@ class Signup extends React.Component {
     } else return true;
   }
   willFocusSubscription = this.props.navigation.addListener(
-    "didFocus",
+    "willFocus",
     payload => {
       if (this.editable()) {
         this.setState({ message: "" });

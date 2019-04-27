@@ -40,7 +40,7 @@ class Help extends React.Component {
     } else return false;
   }
   willFocusSubscription = this.props.navigation.addListener(
-    "didFocus",
+    "willFocus",
     payload => {
       if (this.editable()) {
         this.setState({ message: "" });
@@ -187,7 +187,8 @@ class Help extends React.Component {
             <Picker.Item label="Other" value="other" />
           </Picker>
           {this.showDetails()}
-          <Button
+          <TouchableOpacity
+            style={styles.button}
             title="Help A Friend"
             onPress={() => {
               this.postComplainAPI().then(() => {
@@ -198,7 +199,9 @@ class Help extends React.Component {
                 navigate("MyComplains");
               });
             }}
-          />
+          >
+            <Text style={styles.buttonText}>Register Complain</Text>
+          </TouchableOpacity>
           <Text>{this.state.message}</Text>
           <Text>{this.state.errorMessage}</Text>
           {this.showLogin()}

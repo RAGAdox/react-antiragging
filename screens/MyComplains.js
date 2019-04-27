@@ -26,7 +26,7 @@ class MyColplains extends React.Component {
     };
   }
   willFocusSubscription = this.props.navigation.addListener(
-    "didFocus",
+    "willFocus",
     payload => {
       fetch(urlAPI.url + "/passauth/complainAll", {
         method: "GET",

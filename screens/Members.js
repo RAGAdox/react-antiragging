@@ -28,7 +28,7 @@ class Members extends React.Component {
     };
   }
   willFocusSubscription = this.props.navigation.addListener(
-    "willFocus",
+    "didFocus",
     payload => {
       fetch(urlAPI.url + "/passauth/members", {
         method: "GET",

@@ -6,5 +6,5 @@ module.exports = {
 };*/
 
 /*module.exports = {
-  url: "http://192.168.42.178:2000"
+  url: "http://192.168.42.90:2000"
 };*/
